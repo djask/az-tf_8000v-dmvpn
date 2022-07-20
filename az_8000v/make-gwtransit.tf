@@ -35,7 +35,7 @@ resource "azurerm_local_network_gateway" "c8000v-lngw" {
 
   #the tunnel source should be the private IP
   gateway_address     = azurerm_network_interface.c8000v-nics[count.index].private_ip_address
-  address_space       = [azurerm_virtual_network.transit-1.address_prefixes]
+  address_space       = azurerm_virtual_network.transit-1.address_space
 
   bgp_settings {
     asn = local.csr-bgp-ASN
