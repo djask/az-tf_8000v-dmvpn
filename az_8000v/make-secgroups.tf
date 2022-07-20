@@ -42,8 +42,52 @@ resource "azurerm_network_security_group" "c8000v" {
     destination_address_prefix = "*"
   }
   security_rule {
-    name                       = "Allow_any"
-    priority                   = 110
+    name                       = "Allow Key Exchange"
+    priority                   = 101
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Udp"
+    source_port_range          = "*"
+    destination_port_range     = "500"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow ESP"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Ah"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow AH"
+    priority                   = 103
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Esp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow BGP"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "179"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow_vn"
+    priority                   = 1000
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
@@ -68,7 +112,7 @@ resource "azurerm_network_security_group" "c8000v" {
     priority                   = 4096
     direction                  = "Inbound"
     access                     = "Deny"
-    protocol                    = "*"
+    protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "*"
     source_address_prefix      = "*"
