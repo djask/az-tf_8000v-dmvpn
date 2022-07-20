@@ -16,6 +16,11 @@ provider "azurerm" {
 
 #CVD SD-WAN based transit design for DMVPN on c8000v to service side vnet
 #this is a lab, should be ok
+locals {
+  csr-prefix = "8000v"
+  csr-bgp-ASN = 64600
+}
+
 variable "lab_password" {
   description = "password for vms"
   type        = string
@@ -64,8 +69,3 @@ resource "azurerm_subnet" "transit-sub" {
   virtual_network_name = azurerm_virtual_network.transit-1.name
   address_prefixes     = ["10.0.0.0/26"]
 }
-
-
-#create all required vms (in sub files)
-
-#create vpn gateway

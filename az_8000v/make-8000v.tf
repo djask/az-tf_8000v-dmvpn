@@ -1,10 +1,6 @@
 #create service side ubuntu vm for testing
 #cisco:cisco-c8000v:17_06_03a-byol:17.06.0320220429
 
-locals {
-  csr-prefix = "8000v"
-}
-
 resource "azurerm_public_ip" "c8000v-pubips" {
   count               = 2
   name                = "${local.csr-prefix}-${count.index}_pubip"
