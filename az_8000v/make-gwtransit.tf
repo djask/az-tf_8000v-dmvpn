@@ -33,13 +33,13 @@ resource "azurerm_local_network_gateway" "c8000v-lngw" {
   resource_group_name = azurerm_resource_group.c8000v.name
   location            = azurerm_resource_group.c8000v.location
 
-  #the tunnel source should be the private IP
-  gateway_address     = azurerm_network_interface.c8000v-nics[count.index].private_ip_address
-  address_space       = azurerm_virtual_network.transit-1.address_space
+  #peer to public IP
+  gateway_address     = azurerm_public_ip.c8000v-pubips[count.index].ip_address
+  address_space       = ["1.1.1.${count.index}/32"]
 
   bgp_settings {
     asn = local.csr-bgp-ASN
-    bgp_peering_address = azurerm_network_interface.c8000v-nics[count.index].private_ip_address
+    bgp_peering_address = "1.1.1.${count.index}"
   }
 }
 
@@ -50,9 +50,11 @@ resource "azurerm_virtual_network_gateway_connection" "c8000v-conn" {
   resource_group_name = azurerm_resource_group.c8000v.name
   location            = azurerm_resource_group.c8000v.location
 
+  enable_bgp    = true
+
   type                       = "IPsec"
   virtual_network_gateway_id = azurerm_virtual_network_gateway.net1-vgw.id
   local_network_gateway_id   = azurerm_local_network_gateway.c8000v-lngw[count.index].id
 
-  shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
+  shared_key = "4v3ry53cr371p53c5h4r3dk3y"
 }
