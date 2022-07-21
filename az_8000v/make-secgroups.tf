@@ -13,17 +13,6 @@ resource "azurerm_network_security_group" "allow-any" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-  security_rule {
-    name                       = "Allow outbound"
-    priority                   = 4090
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
 }
 
 resource "azurerm_network_security_group" "c8000v" {
@@ -38,7 +27,8 @@ resource "azurerm_network_security_group" "c8000v" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "*"
-    source_address_prefixes    = ["64.104.0.0/16"]
+    #source_address_prefixes    = ["64.104.0.0/16"]
+    source_address_prefix = "*"
     destination_address_prefix = "*"
   }
   security_rule {
@@ -75,45 +65,23 @@ resource "azurerm_network_security_group" "c8000v" {
     destination_address_prefix = "*"
   }
   security_rule {
+    name                       = "Allow from dmz"
+    priority                   = 104
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefixes      = ["64.104.0.0/16"]
+    destination_address_prefix = "*"
+  }
+  security_rule {
     name                       = "Allow BGP"
     priority                   = 120
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "179"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "Allow_vn"
-    priority                   = 1000
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "VirtualNetwork"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "Allow outbound"
-    priority                   = 4090
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "Deny_all"
-    priority                   = 4096
-    direction                  = "Inbound"
-    access                     = "Deny"
-    protocol                   = "*"
-    source_port_range          = "*"
     destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"

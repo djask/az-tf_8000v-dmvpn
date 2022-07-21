@@ -26,7 +26,8 @@ resource "azurerm_network_interface" "c8000v-nics" {
 resource "azurerm_network_interface_security_group_association" "c8000v-nics-assoc" {
   count                     = 2
   network_interface_id      = azurerm_network_interface.c8000v-nics[count.index].id
-  network_security_group_id = azurerm_network_security_group.c8000v.id
+  #network_security_group_id = azurerm_network_security_group.c8000v.id
+  network_security_group_id = azurerm_network_security_group.allow-any.id
 }
 
 resource "azurerm_virtual_machine" "c8000v" {
