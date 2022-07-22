@@ -34,7 +34,7 @@ resource "azurerm_resource_group" "c8000v" {
 
 #internal subnet
 resource "azurerm_virtual_network" "internal-1" {
-  name                = "c8000v-internal_vn"
+  name                = "${local.csr_prefix}-internal_vn"
   resource_group_name = azurerm_resource_group.c8000v.name
   location            = azurerm_resource_group.c8000v.location
   address_space       = ["192.168.0.0/23"]
@@ -54,10 +54,9 @@ resource "azurerm_subnet" "internal-gw" {
   address_prefixes     = ["192.168.1.0/24"]
 }
 
-
 #transit net for 8000v
 resource "azurerm_virtual_network" "transit-1" {
-  name                = "c8000v-transit_vn"
+  name                = "${local.csr_prefix}-transit_vn"
   resource_group_name = azurerm_resource_group.c8000v.name
   location            = azurerm_resource_group.c8000v.location
   address_space       = ["10.0.0.0/24"]
